@@ -16,7 +16,8 @@
     }
   },
   "variables": {
-    "storageAccountKind": "Storage"
+    "storageAccountKind": "Storage",
+    "securityGroupName": "nsg-mcl",
   },
   "resources": [
     {
@@ -29,6 +30,42 @@
       },
       "kind": "[variables('storageAccountKind')]",
       "properties": {
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('securityGroupName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "ssh",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": "100",
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "jenkins",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": "110",
+              "direction": "Inbound"
+            }
+          }
+        ]
       }
     }
   ],

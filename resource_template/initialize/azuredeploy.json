@@ -2,20 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "storageAccountName": {
-      "type": "string",
-      "metadata": {
-        "description": "storage account name"
-      }
-    },
-    "storageAccountType": {
-      "type": "string",
-      "metadata": {
-        "description": "storage account type"
-      }
-    }
   },
   "variables": {
+    "storageAccountName": "mctsa",
+    "storageAccountType": "Standard_LRS",
     "storageAccountKind": "Storage",
     "securityGroupName": "mctnsg",
     "virtualNetworkName": "mctvn",
@@ -27,10 +17,10 @@
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2017-06-01",
-      "name": "[parameters('storageAccountName')]",
+      "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "[parameters('storageAccountType')]",
+        "name": "[variables('storageAccountType')]",
       },
       "kind": "[variables('storageAccountKind')]",
       "properties": {

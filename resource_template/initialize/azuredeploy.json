@@ -17,7 +17,11 @@
   },
   "variables": {
     "storageAccountKind": "Storage",
-    "securityGroupName": "nsg-mcl",
+    "securityGroupName": "mctnsg",
+    "virtualNetworkName": "mctvn",
+    "vnetAddressPrefix": "10.0.1.0/24",
+    "subnetName": "mctsv",
+    "subnetAddressPrefix": "10.0.1.0/24"
   },
   "resources": [
     {
@@ -63,6 +67,33 @@
               "access": "Allow",
               "priority": "110",
               "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/',variables('securityGroupName'))]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vnetAddressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetName')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetAddressPrefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('securityGroupName'))]"
+              }
             }
           }
         ]

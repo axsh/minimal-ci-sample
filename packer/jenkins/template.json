@@ -9,7 +9,7 @@
     "storage_account": "",
 
     "capture_container_name": "jenkins",
-    "capture_name_prefix": "jenkins-master",
+    "capture_name_prefix": "jenkins",
 
     "image_publisher": "OpenLogic",
     "image_offer": "CentOS",

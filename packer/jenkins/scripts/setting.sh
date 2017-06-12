@@ -26,6 +26,19 @@ tar zxvf ${git_download_dir}/${package_name} -C ${git_download_dir}
 
 git --version
 
+# install packer
+packer_download_dir=/usr/local/src
+packer_install_dir=/usr/local/packer/bin/
+[[ -d ${packer_install_dir} ]] || mkdir -p ${packer_install_dir}
+
+package="https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip"
+package_name=${package##*/}
+
+curl -fSkL --tlsv1.2 ${package} -o ${packer_download_dir}/${package_name}
+unzip ${packer_download_dir}/${package_name} -d ${packer_install_dir}
+
+${packer_install_dir}/packer version
+
 # install openjdk
 yum install -y java-1.8.0-openjdk
 

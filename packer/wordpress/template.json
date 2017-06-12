@@ -53,6 +53,13 @@
   "provisioners": [
     {
       "type": "shell",
+      "environment_vars": [
+      ],
+      "execute_command": "chmod +x {{ .Path }}; echo '{{ user `ssh_password` }}' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+      "script": "scripts/setting.sh"
+    },
+    {
+      "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; echo '{{ user `ssh_password` }}' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "inline": [
         "yum update -y",

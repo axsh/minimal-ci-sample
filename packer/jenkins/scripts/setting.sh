@@ -39,6 +39,16 @@ unzip ${packer_download_dir}/${package_name} -d ${packer_install_dir}
 
 ${packer_install_dir}/packer version
 
+# install azure cli 2.0
+yum install -y gcc libffi-devel python-devel openssl-devel
+
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+curl https://raw.githubusercontent.com/Azure/azure-cli/master/packaged_releases/pip_requirements/0.2.4_python27.txt -o req.txt
+pip install -r req.txt
+
+az --version
+
 # install openjdk
 yum install -y java-1.8.0-openjdk
 

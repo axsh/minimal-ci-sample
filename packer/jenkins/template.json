@@ -20,7 +20,10 @@
     "vm_size": "Standard_A2",
 
     "ssh_username": "centos",
-    "ssh_password": "Gd#Dh<P!"
+    "ssh_password": "Gd#Dh<P!",
+
+    "jcliuser": "",
+    "jclipasswd": ""
   },
   "builders": [
     {
@@ -52,10 +55,23 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "jenkins.tar.gz",
+      "destination": "/tmp/jenkins.tar.gz"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "JCLIUSER={{ user `jcliuser` }}",
+        "JCLIPASSWD={{ user `jclipasswd` }}"
+      ],
+      "execute_command": "chmod +x {{ .Path }}; echo '{{ user `ssh_password` }}' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
+      "script": "scripts/setting.sh"
+    },
+    {
       "type": "shell",
       "execute_command": "chmod +x {{ .Path }}; echo '{{ user `ssh_password` }}' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
       "inline": [
-        "yum update -y",
         "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=1 && sync"
       ],
       "skip_clean": true

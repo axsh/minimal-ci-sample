@@ -50,7 +50,7 @@ chmod 440 /etc/sudoers.d/jenkins
 #
 service jenkins start
 
-while ! curl -I -s http://localhost:8080/ | grep -q "200 OK"; do
+while ! curl -I -s http://localhost:8080/ -u ${JCLIUSER}:${JCLIPASSWD} | grep -q "200 OK"; do
 	echo "Waiting for Jenkins..."
 	sleep 3
 done

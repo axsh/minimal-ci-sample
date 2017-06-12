@@ -12,6 +12,20 @@ sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
 # TODO: NetworkManager and firewalld disabled
 
+# install git
+yum install -y gcc gcc-c++ libcurl-devel expat-devel gettext-devel openssl-devel zlib-devel perl-ExtUtils-MakeMaker
+
+git_download_dir=/usr/local/src
+package="https://www.kernel.org/pub/software/scm/git/git-2.13.1.tar.gz"
+package_name="${package##*/}"
+
+curl -fSkL ${package} -o ${git_download_dir}/${package_name}
+tar zxvf ${git_download_dir}/${package_name} -C ${git_download_dir}
+
+( cd ${git_download_dir}/${package_name%.tar.gz}/ && make prefix=/usr all && make prefix=/usr install )
+
+git --version
+
 # install openjdk
 yum install -y java-1.8.0-openjdk
 

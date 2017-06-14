@@ -1,0 +1,35 @@
+---
+- name: install git required packages
+  yum:
+    name: "{{item}}"
+  with_items:
+    - gcc
+    - gcc-c++
+    - libcurl-devel
+    - expat-devel
+    - gettext-devel
+    - openssl-devel
+    - zlib-devel
+    - perl-ExtUtils-MakeMaker
+
+- name: Extract archive
+  unarchive:
+    src: https://www.kernel.org/pub/software/scm/git/git-2.13.1.tar.gz
+    dest: /usr/local/src/
+    remote_src: true
+    owner: root
+    group: root
+
+- name: Check git install
+  command: which git
+  ignore_errors: True
+  register: git_result
+
+- name: make git
+  command: chdir=/usr/local/src/git-2.13.1 make prefix=/usr all
+  when: git_result|failed
+
+- name: install git
+  command: chdir=/usr/local/src/git-2.13.1 make prefix=/usr install
+  when: git_result|failed
+

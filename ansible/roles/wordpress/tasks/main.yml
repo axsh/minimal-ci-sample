@@ -1,0 +1,30 @@
+---
+- name: Download wordpress
+  get_url:
+    url: https://ja.wordpress.org/latest-ja.tar.gz
+    dest: /tmp/latest-ja.tar.gz
+
+- name: Extract archive
+  command: chdir=/tmp/ /bin/tar xvf latest-ja.tar.gz -C /var/www/html/ creates=/var/www/html/wordpress
+
+- name: Copy config file
+  copy:
+    src: /var/www/html/wordpress/wp-config-sample.php
+    dest: /var/www/html/wordpress/wp-config.php
+    mode: 0644
+
+- name: Setup config file
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    state: present
+    backrefs: yes
+    regexp: "{{item.regexp}}"
+    line: "{{item.line}}"
+  with_items:
+  - regexp: "database_name_here"
+    line: "define('DB_NAME', 'wordpress');"
+  - regexp: "username_here"
+    line: "define('DB_USER', 'wordpress');"
+  - regexp: "password_here"
+    line: "define('DB_PASSWORD', 'wppassword');"
+

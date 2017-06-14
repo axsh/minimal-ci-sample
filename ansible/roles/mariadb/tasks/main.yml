@@ -1,0 +1,26 @@
+---
+- name: install mariadb
+  yum:
+    name: "{{item}}"
+  with_items:
+      - mariadb
+      - mariadb-server
+      - MySQL-python
+
+- name: enabled mariadb
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: create database
+  mysql_db:
+    name: wordpress
+    encoding: utf8
+
+- name: create database user
+  mysql_user:
+    name: wordpress
+    password: wppassword
+    priv: '*.*:ALL,GRANT'
+

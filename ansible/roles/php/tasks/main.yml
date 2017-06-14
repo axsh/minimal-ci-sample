@@ -1,0 +1,10 @@
+---
+- name: install php
+  yum:
+    name: "{{item}}"
+  with_items:
+      - php-mysql
+      - php
+      - php-gd
+      - php-mbstring
+

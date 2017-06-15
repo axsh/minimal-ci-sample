@@ -53,10 +53,25 @@
   "provisioners": [
     {
       "type": "shell",
-      "environment_vars": [
-      ],
       "execute_command": "chmod +x {{ .Path }}; echo '{{ user `ssh_password` }}' | {{ .Vars }} sudo -S -E bash '{{ .Path }}'",
-      "script": "scripts/setting.sh"
+      "inline": [
+        "yum -y update",
+        "yum -y install epel-release",
+        "yum -y install ansible"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../../ansible",
+      "destination": "/tmp/ansible-local"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "../../ansible/wordpress.yml",
+      "role_paths": [
+        "../../ansible/roles"
+      ],
+      "staging_directory": "/tmp/ansible-local"
     },
     {
       "type": "shell",

@@ -1,0 +1,17 @@
+---
+- name: setup clock
+  timezone:
+    name: Asia/Tokyo
+
+- name: install python selinux library
+  yum:
+    name: "{{item}}"
+  with_items:
+     - libselinux-python
+     - policycoreutils-python
+
+- name: selinux disabled
+  selinux:
+    policy: targeted
+    state: disabled
+

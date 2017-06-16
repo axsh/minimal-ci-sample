@@ -2,22 +2,46 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "storage account name"
+      },
+      "defaultValue": "mcssta"
+    },
+    "securityGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "security group name"
+      },
+      "defaultValue": "mcsnsg"
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "virtual network name"
+      },
+      "defaultValue": "mcsvn"
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "subnet name"
+      },
+      "defaultValue": "mcssn"
+    }
   },
   "variables": {
-    "storageAccountName": "mctsa",
     "storageAccountType": "Standard_LRS",
     "storageAccountKind": "Storage",
-    "securityGroupName": "mctnsg",
-    "virtualNetworkName": "mctvn",
     "vnetAddressPrefix": "10.0.1.0/24",
-    "subnetName": "mctsv",
     "subnetAddressPrefix": "10.0.1.0/24"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2017-06-01",
-      "name": "[variables('storageAccountName')]",
+      "name": "[parameters('storageAccountName')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "[variables('storageAccountType')]",
@@ -29,7 +53,7 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2017-04-01",
-      "name": "[variables('securityGroupName')]",
+      "name": "[parameters('securityGroupName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "securityRules": [
@@ -47,6 +71,19 @@
             }
           },
           {
+            "name": "http",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": "110",
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "jenkins",
             "properties": {
               "protocol": "Tcp",
@@ -55,7 +92,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": "110",
+              "priority": "120",
               "direction": "Inbound"
             }
           }
@@ -65,10 +102,10 @@
     {
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-04-01",
-      "name": "[variables('virtualNetworkName')]",
+      "name": "[parameters('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkSecurityGroups/',variables('securityGroupName'))]"
+        "[concat('Microsoft.Network/networkSecurityGroups/',parameters('securityGroupName'))]"
       ],
       "properties": {
         "addressSpace": {
@@ -78,11 +115,11 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[parameters('subnetName')]",
             "properties": {
               "addressPrefix": "[variables('subnetAddressPrefix')]",
               "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('securityGroupName'))]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups',parameters('securityGroupName'))]"
               }
             }
           }

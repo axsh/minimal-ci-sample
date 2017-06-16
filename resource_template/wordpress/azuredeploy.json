@@ -2,6 +2,34 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "storage account name"
+      },
+      "defaultValue": "mcssta"
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "virtual network name"
+      },
+      "defaultValue": "mcsvn"
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "subnet name"
+      },
+      "defaultValue": "mcssn"
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "admin user name"
+      },
+      "defaultValue": "axsh"
+    },
     "sshKeyData": {
       "type": "string",
       "metadata": {
@@ -20,18 +48,15 @@
     "publicIPAllocationMethod": "Static",
     "privateIPAllocationMethod": "Static",
     "ipaddress": "10.0.1.5",
-    "vnetName": "mctvn",
-    "subnetName": "mctsv",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetName'))]",
-    "netRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
+    "netRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
     "vmSize": "Standard_A2",
-    "adminUsername": "axsh",
     "disablePasswordAuthentication": "true",
-    "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
+    "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
     "osType": "linux",
     "caching": "ReadWrite",
     "createOption": "FromImage",
-    "vhdUriEndpoint": "https://mctsa.blob.core.windows.net/osdisk/"
+    "vhdUriEndpoint": "[concat('https://',parameters('storageAccountName'),'.blob.core.windows.net/osdisk/')]"
   },
   "resources": [
     {
@@ -91,7 +116,7 @@
         },
         "osProfile": {
           "computerName": "[variables('target')]",
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": "[variables('disablePasswordAuthentication')]",
             "ssh": {

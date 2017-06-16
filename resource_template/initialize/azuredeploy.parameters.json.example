@@ -5,21 +5,14 @@
     "storageAccountName": {
       "value": ""
     },
-    "vnetName": {
+    "securityGroupName": {
+      "value": ""
+    },
+    "virtualNetworkName": {
       "value": ""
     },
     "subnetName": {
       "value": ""
     },
-    "adminUsername": {
-      "value": ""
-    },
-    "sshKeyData": {
-      "value": ""
-    },
-    "imageUri": {
-      "value": ""
-    }
   }
 }
-

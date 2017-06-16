@@ -4,6 +4,6 @@
   "subscription_id": "",
   "tenant_id": "",
 
-  "resource_group_name": "minimal-ci-tools",
+  "resource_group_name": "minimal-ci-sample",
   "storage_account": "mctsa"
 }

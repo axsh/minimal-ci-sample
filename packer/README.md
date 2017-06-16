@@ -4,7 +4,7 @@ How to Use packer
 ### presetup
 
 * [azure service principal](https://docs.microsoft.com/ja-jp/cli/azure/create-an-azure-service-principal-azure-cli)
-* [azure initial setup](https://github.com/t-iwano/minimal-ci-tools/tree/master/resource_template/README.md)
+* [azure initial setup](https://github.com/axsh/minimal-ci-sample/tree/master/resource_template/README.md)
 
 ### build dependencies
 
@@ -35,7 +35,7 @@ example
   "subscription_id": "your_subscription_id_here",
   "tenant_id": "your_tenant_id_here",
 
-  "resource_group_name": "minimal-ci-tools",
+  "resource_group_name": "minimal-ci-sample",
   "storage_account": "mctsa",
 
   "jcliuser": "",

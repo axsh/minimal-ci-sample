@@ -19,7 +19,7 @@ How to Use Resource Templates
 
 ```bash
 # git clone https://github.com/axsh/minimal-ci-sample.git
-# cd minimal-ci-tools.git
+# cd minimal-ci-sample.git
 ```
 
 ### create environment

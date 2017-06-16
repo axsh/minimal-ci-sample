@@ -45,7 +45,7 @@
         <hudson.model.StringParameterDefinition>
           <name>RESOURCE_GROUP_NAME</name>
           <description></description>
-          <defaultValue>minimal-ci-tools</defaultValue>
+          <defaultValue>minimal-ci-sample</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>STORAGE_ACCOUNT</name>
@@ -64,7 +64,7 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/t-iwano/minimal-ci-tools.git</url>
+        <url>https://github.com/axsh/minimal-ci-sample.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

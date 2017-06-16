@@ -1,2 +1,2 @@
-# minimal-ci-tools
+# minimal-ci-sample
 

@@ -13,8 +13,8 @@ How to Use packer
 ### setup
 
 ```bash
-# git clone https://github.com/t-iwano/minimal-ci-tools.git
-# cd minimal-ci-tools.git
+# git clone https://github.com/axsh/minimal-ci-sample.git
+# cd minimal-ci-sample.git
 ```
 
 ### building vmapp(vmimage)

@@ -5,5 +5,5 @@
   "tenant_id": "",
 
   "resource_group_name": "minimal-ci-sample",
-  "storage_account": "mctsa"
+  "storage_account": "mcssta"
 }

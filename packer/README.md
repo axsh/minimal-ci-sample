@@ -46,6 +46,7 @@ example
 build jenkins vmimage
 ```bash
 # cd packer/jenkins
+# ./scripts/compress_jenkins_job.sh
 # packer validate -var-file=variables.json template.json
 # packer create -var-file=variables.json template.json
 ```

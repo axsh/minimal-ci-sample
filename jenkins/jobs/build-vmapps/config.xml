@@ -50,7 +50,7 @@
         <hudson.model.StringParameterDefinition>
           <name>STORAGE_ACCOUNT</name>
           <description></description>
-          <defaultValue>mctsa</defaultValue>
+          <defaultValue>mcssta</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>TARGET</name>

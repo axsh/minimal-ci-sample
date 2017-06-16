@@ -71,6 +71,19 @@
             }
           },
           {
+            "name": "http",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": "110",
+              "direction": "Inbound"
+            }
+          },
+          {
             "name": "jenkins",
             "properties": {
               "protocol": "Tcp",
@@ -79,7 +92,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": "110",
+              "priority": "120",
               "direction": "Inbound"
             }
           }

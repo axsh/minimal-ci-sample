@@ -1,0 +1,38 @@
+---
+- name: Check azure-cli install
+  command: which az
+  ignore_errors: True
+  register: az_result
+
+- name: Install azure-cli required packages
+  yum:
+    name: "{{item}}"
+  with_items:
+    - gcc
+    - libffi-devel
+    - python-devel
+    - openssl-devel
+  when: az_result|failed
+
+- name: Download get-pip.py file
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+  when: az_result|failed
+
+- name: Execute get-pip.py
+  command: python /tmp/get-pip.py
+  when: az_result|failed
+
+- name: Download pip required list
+  get_url:
+    url: https://raw.githubusercontent.com/Azure/azure-cli/master/packaged_releases/pip_requirements/0.2.4_python27.txt
+    dest: /tmp/req.txt
+  when: az_result|failed
+
+- name: Install azure-cli and required packages
+  pip:
+    requirements: /tmp/req.txt
+    state: present
+  when: az_result|failed
+

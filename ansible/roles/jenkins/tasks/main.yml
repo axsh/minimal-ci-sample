@@ -1,0 +1,65 @@
+---
+- name: Install openjdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Download jenkins repo
+  get_url:
+    url: http://pkg.jenkins-ci.org/redhat/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Install jenkins-ci.org.key
+  rpm_key:
+    key: http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: Install jenkins
+  yum:
+    name: jenkins
+    state: present
+
+- name: Modify jenkins user shell
+  command: usermod -s /bin/bash jenkins
+
+- name: Create .ssh directory
+  file:
+    path: /var/lib/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+
+- name: Copy ssh config
+  copy:
+    src: ssh.config
+    dest: /var/lib/jenkins/.ssh/config
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Add jenkins user to sudoers
+  lineinfile:
+    dest: /etc/sudoers.d/{{item.user}}
+    owner: root
+    group: root
+    mode: 0440
+    state: present
+    create: yes
+    line: "{{item.user}} {{item.role}}"
+    validate: 'visudo -cf %s'
+  with_items:
+    - { user: "jenkins", role: "ALL = (ALL) NOPASSWD: ALL" }
+
+- name: Copy jenkins confg.xml
+  unarchive:
+    src: /tmp/jenkins.tar.gz
+    dest: /var/lib/jenkins/
+    owner: jenkins
+    group: jenkins
+
+- name: Jenkins service started
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+

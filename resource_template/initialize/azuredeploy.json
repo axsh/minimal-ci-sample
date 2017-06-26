@@ -9,6 +9,15 @@
       },
       "defaultValue": "mcssta"
     },
+    "acrName": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 50,
+      "metadata": {
+        "description": "azure container registry name"
+      },
+      "defaultValue": "acrmcssta"
+    },
     "securityGroupName": {
       "type": "string",
       "metadata": {
@@ -35,7 +44,9 @@
     "storageAccountType": "Standard_LRS",
     "storageAccountKind": "Storage",
     "vnetAddressPrefix": "10.0.1.0/24",
-    "subnetAddressPrefix": "10.0.1.0/24"
+    "subnetAddressPrefix": "10.0.1.0/24",
+    "acrStorageName": "[concat('acr', uniqueString(resourceGroup().id))]",
+    "acrStorageId": "[resourceId('Microsoft.Storage/storageAccounts', variables('acrStorageName'))]"
   },
   "resources": [
     {
@@ -48,6 +59,42 @@
       },
       "kind": "[variables('storageAccountKind')]",
       "properties": {
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('acrStorageName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[variables('storageAccountType')]",
+      },
+      "kind": "[variables('storageAccountKind')]",
+      "properties": {
+      },
+      "tags": {
+        "displayName": "ACR Image's storage",
+        "container.registry": "[parameters('acrName')]"
+      }
+    },
+    {
+      "type": "Microsoft.ContainerRegistry/registries",
+      "apiVersion": "2017-03-01",
+      "name": "[parameters('acrName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[variables('acrStorageId')]"
+      ],
+      "properties": {
+        "adminUserEnabled": "true",
+        "storageAccount": {
+          "accessKey": "[listKeys(variables('acrStorageId'),'2017-06-01').keys]",
+          "name": "[variables('acrStorageName')]"
+        }
+      },
+      "tags": {
+        "displayName": "Container Registry",
+        "container.registry": "[parameters('acrName')]"
       }
     },
     {

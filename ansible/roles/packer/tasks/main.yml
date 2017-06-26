@@ -4,6 +4,12 @@
   ignore_errors: True
   register: packer_result
 
+- name: Install unzip command
+  yum:
+    name: unzip
+    state: latest
+  when: packer_result|failed
+
 - name: Extract archive
   unarchive:
     src: https://releases.hashicorp.com/packer/1.0.0/packer_1.0.0_linux_amd64.zip

@@ -1,0 +1,20 @@
+---
+- name: Deploy Container
+  docker_container:
+    name: "{{docker_name}}"
+    image: "{{docker_image}}"
+    pull: true
+    restart_policy: on-failure
+    state: started
+    ports: "{{docker_ports}}"
+    command: /sbin/init
+    privileged: yes
+    capabilities:
+      - SYS_ADMIN
+  register: docker_result
+
+- name: Add new docker connection
+  add_host:
+    name: "{{docker_result.ansible_facts.docker_container.Config.Hostname}}"
+    groups: "docker-container"
+

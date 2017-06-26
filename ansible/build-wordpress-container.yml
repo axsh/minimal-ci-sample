@@ -1,0 +1,18 @@
+---
+- name: launch container
+  hosts: build-wordpress
+  connection: local
+  become: true
+  roles:
+    - deploy
+
+- name: Build container
+  hosts: docker-container
+  connection: docker
+  roles:
+    - common-docker
+    - httpd
+    - mariadb
+    - php
+    - wordpress
+

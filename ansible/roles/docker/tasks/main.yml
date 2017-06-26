@@ -1,4 +1,9 @@
 ---
+- name: Install docker-python
+  yum:
+    name: docker-python
+    state: present
+
 - name: Install yum-utils
   yum:
     name: yum-utils

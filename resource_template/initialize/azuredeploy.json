@@ -85,10 +85,13 @@
       "dependsOn": [
         "[variables('acrStorageId')]"
       ],
+      "sku": {
+        "name": "Basic"
+      },
       "properties": {
         "adminUserEnabled": "true",
         "storageAccount": {
-          "accessKey": "[listKeys(variables('acrStorageId'),'2017-06-01').keys]",
+          "accessKey": "[listKeys(variables('acrStorageId'),'2017-06-01').keys[0].value]",
           "name": "[variables('acrStorageName')]"
         }
       },

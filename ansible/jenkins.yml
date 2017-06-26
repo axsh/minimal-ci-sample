@@ -1,5 +1,5 @@
 ---
-- name: setup wordpress
+- name: setup jenkins
   hosts: all
   connection: local
   become: true

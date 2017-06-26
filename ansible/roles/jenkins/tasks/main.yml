@@ -57,9 +57,29 @@
     owner: jenkins
     group: jenkins
 
+- name: Initiate the fact
+  set_fact:
+    jenkins_restart_required: yes
+
 - name: Jenkins service started
   service:
     name: jenkins
     state: started
     enabled: yes
+  when: jenkins_restart_required
+
+- name: Wait for jenkins start up
+  uri:
+    url: http://localhost:8080
+    status_code: 200
+    timeout: 5
+    user: "{{jenkins_user}}"
+    password: "{{jenkins_password}}"
+    force_basic_auth: yes
+  register: jenkins_service_status
+  retries: 60
+  delay: 5
+  until: >
+    'status' in jenkins_service_status and jenkins_service_status['status'] == 200
+  when: jenkins_restart_required
 

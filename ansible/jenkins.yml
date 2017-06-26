@@ -9,4 +9,5 @@
     - packer
     - azure-cli
     - jenkins
+    - docker
 

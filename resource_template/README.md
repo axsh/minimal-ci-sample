@@ -44,6 +44,18 @@ example
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "storageAccountName": {
+      "value": "your_storage_account_name_here"
+    },
+    "vnetName": {
+      "value": "your_vnet_name_here"
+    },
+    "subnetName": {
+      "value": "your_subnet_name_here"
+    },
+    "adminUsername": {
+      "value": "your_login_user_name_here"
+    },
     "sshKeyData": {
       "value": "your_ssh_publickey_here"
     },

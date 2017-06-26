@@ -1,0 +1,12 @@
+---
+- name: setup wordpress
+  hosts: all
+  connection: local
+  become: true
+  roles:
+    - common
+    - git
+    - packer
+    - azure-cli
+    - jenkins
+

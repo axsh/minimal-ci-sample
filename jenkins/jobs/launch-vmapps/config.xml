@@ -38,6 +38,11 @@
           <defaultValue>minimal-ci-sample</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
+          <name>STORAGE_ACCOUNT_NAME</name>
+          <description></description>
+          <defaultValue>mcssta</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
           <name>TARGET</name>
           <description></description>
           <defaultValue>wordpress</defaultValue>
@@ -78,6 +83,9 @@ cat &lt;&lt;EOS &gt; azuredeploy.parameters.json
   &quot;$schema&quot;: &quot;http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#&quot;,
   &quot;contentVersion&quot;: &quot;1.0.0.0&quot;,
   &quot;parameters&quot;: {
+    &quot;storageAccountName&quot;: {
+      &quot;value&quot;: &quot;${STORAGE_ACCOUNT_NAME}&quot;
+    },
     &quot;sshKeyData&quot;: {
       &quot;value&quot;: &quot;${PUBLIC_KEY}&quot;
     },

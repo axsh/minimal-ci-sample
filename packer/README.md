@@ -36,7 +36,7 @@ example
   "tenant_id": "your_tenant_id_here",
 
   "resource_group_name": "minimal-ci-sample",
-  "storage_account": "mctsa",
+  "storage_account": "mcssta",
 
   "jcliuser": "",
   "jclipasswd": ""

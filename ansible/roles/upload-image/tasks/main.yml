@@ -1,0 +1,8 @@
+---
+- name: Upload image
+  docker_image:
+    name: "{{docker_name}}"
+    repository: "{{docker_registry_name}}/{{docker_name}}"
+    tag: latest
+    push: yes
+

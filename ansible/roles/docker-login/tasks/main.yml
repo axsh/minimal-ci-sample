@@ -1,0 +1,8 @@
+---
+- name: Login Docker Private registry
+  docker_login:
+    registry: "{{docker_registry_name}}"
+    username: "{{docker_username}}"
+    password: "{{docker_password}}"
+    reauthorize: yes
+

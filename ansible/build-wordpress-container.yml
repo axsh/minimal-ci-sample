@@ -16,3 +16,11 @@
     - php
     - wordpress
 
+- name: Image upload Docker private registry
+  hosts: docker-container
+  connection: local
+  become: true
+  roles:
+    - docker-login
+    - upload-image
+

@@ -5,6 +5,7 @@
     repository: "{{docker_registry_name}}/{{docker_name}}"
     tag: latest
     push: yes
+    force: true
 
 - name: Remove docker container
   docker_container:

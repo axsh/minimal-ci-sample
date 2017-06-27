@@ -7,6 +7,9 @@
 - name: Add jenkins user
   command: useradd -d /var/lib/jenkins -s /bin/bash -m jenkins
 
+- name: Add jenkins user to docker group
+  command: usermod -g docker jenkins
+
 - name: Create .ssh directory
   file:
     path: /var/lib/jenkins/.ssh

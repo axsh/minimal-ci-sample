@@ -9,6 +9,7 @@
 - name: Build container
   hosts: docker-container
   connection: docker
+  become: true
   roles:
     - common-docker
     - httpd

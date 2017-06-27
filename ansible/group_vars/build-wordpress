@@ -1,0 +1,4 @@
+docker_image: centos:7.3.1611
+docker_ports:
+  - 80:80
+

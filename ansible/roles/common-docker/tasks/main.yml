@@ -1,0 +1,6 @@
+---
+- name: Install initscripts
+  yum:
+    name: initscripts
+    state: present
+

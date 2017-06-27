@@ -1,0 +1,162 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "storage account name"
+      },
+      "defaultValue": "mcssta"
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "virtual network name"
+      },
+      "defaultValue": "mcsvn"
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "subnet name"
+      },
+      "defaultValue": "mcssn"
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "admin user name"
+      },
+      "defaultValue": "axsh"
+    },
+    "sshKeyData": {
+      "type": "string",
+      "metadata": {
+        "description": "ssh public key data"
+      }
+    },
+    "imageUri": {
+      "type": "string",
+      "metadata": {
+        "description": "virtual machine images uri"
+      }
+    }
+  },
+  "variables": {
+    "target": "docker",
+    "publicIPAllocationMethod": "Static",
+    "privateIPAllocationMethod": "Static",
+    "ipaddress": "10.0.1.6",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
+    "netRef": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]",
+    "vmSize": "Standard_A2",
+    "disablePasswordAuthentication": "true",
+    "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+    "osType": "linux",
+    "caching": "ReadWrite",
+    "createOption": "FromImage",
+    "vhdUriEndpoint": "[concat('https://',parameters('storageAccountName'),'.blob.core.windows.net/osdisk/')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2017-04-01",
+      "name": "[variables('target')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAllocationMethod')]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('target'), '-net')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "system": "[variables('target')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/',variables('target'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "[concat(variables('target'), '_ipconfig')]",
+            "properties": {
+              "privateIPAllocationMethod": "[variables('privateIPAllocationMethod')]",
+              "privateIPAddress": "[variables('ipaddress')]",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('target'))]"
+              },
+              "subnet": {
+                "id": "[variables('netRef')]"
+              }
+            }
+          }
+
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2017-03-30",
+      "name": "[variables('target')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "system": "[variables('target')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/',variables('target'))]",
+        "[concat('Microsoft.Network/networkInterfaces/',variables('target'), '-net')]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('target')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": "[variables('disablePasswordAuthentication')]",
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "[variables('sshKeyPath')]",
+                  "keyData": "[parameters('sshKeyData')]"
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "osDisk": {
+            "name": "[variables('target')]",
+            "osType": "[variables('osType')]",
+            "caching": "[variables('caching')]",
+            "createOption": "[variables('createOption')]",
+            "image": {
+              "uri": "[parameters('imageUri')]"
+            },
+            "vhd": {
+              "uri": "[concat(variables('vhdUriEndpoint'),variables('target'),'.vhd')]"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkinterfaces',concat(variables('target'),'-net'))]",
+              "properties": {
+                "primary": "true"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
+

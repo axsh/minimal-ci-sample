@@ -1,0 +1,9 @@
+---
+- name: setup docker
+  hosts: all
+  become: true
+  roles:
+    - common
+    - docker
+    - jenkins-slave
+

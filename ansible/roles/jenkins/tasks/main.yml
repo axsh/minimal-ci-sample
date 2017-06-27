@@ -87,6 +87,7 @@
   jenkins_plugin:
     name: "{{item}}"
     state: present
+    timeout: 300
     params:
       url_username: "{{jenkins_user}}"
       url_password: "{{jenkins_password}}"

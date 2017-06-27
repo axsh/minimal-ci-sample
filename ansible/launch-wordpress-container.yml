@@ -1,0 +1,9 @@
+---
+- name: launch container
+  hosts: launch-wordpress
+  connection: local
+  become: true
+  roles:
+    - docker-login
+    - deploy
+

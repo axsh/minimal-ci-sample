@@ -1,11 +1,16 @@
 ---
+- name: Stop docker container
+  command: docker stop {{docker_name}}
+
+- name: Commit docker container
+  command: docker commit {{docker_name}} {{docker_name}}:latest
+
 - name: Upload image
   docker_image:
     name: "{{docker_name}}"
     repository: "{{docker_registry_name}}/{{docker_name}}"
     tag: latest
     push: yes
-    force: true
 
 - name: Remove docker container
   docker_container:

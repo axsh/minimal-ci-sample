@@ -6,3 +6,16 @@
     tag: latest
     push: yes
 
+- name: Remove docker container
+  docker_container:
+    name: "{{docker_name}}"
+    state: absent
+
+- name: Remove docker images
+  docker_image:
+    name: "{{item}}"
+    state: absent
+  with_items:
+    - "{{docker_name}}"
+    - "{{docker_registry_name}}/{{docker_name}}"
+

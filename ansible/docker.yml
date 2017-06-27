@@ -4,6 +4,7 @@
   become: true
   roles:
     - common
+    - git
     - docker
     - jenkins-slave
 

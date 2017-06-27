@@ -9,7 +9,7 @@
 
 - name: Copy config file
   copy:
-    src: /var/www/html/wordpress/wp-config-sample.php
+    src: wp-config-sample.php
     dest: /var/www/html/wordpress/wp-config.php
     mode: 0644
 

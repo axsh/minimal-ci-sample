@@ -1,0 +1,33 @@
+---
+- name: Install openjdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Add jenkins user
+  command: useradd -d /var/lib/jenkins -s /bin/bash -m jenkins
+
+- name: Create .ssh directory
+  file:
+    path: /var/lib/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+
+- name: Copy ssh config
+  copy:
+    src: ssh.config
+    dest: /var/lib/jenkins/.ssh/config
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Add jenkins user to sudoers
+  copy:
+    src: jenkins.sudoers
+    dest: /etc/sudoers.d/jenkins
+    owner: root
+    group: root
+    mode: 0440
+
